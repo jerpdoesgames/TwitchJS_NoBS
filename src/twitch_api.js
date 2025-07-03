@@ -1,12 +1,12 @@
 class twitchAPI
 {
     basePath = "https://api.twitch.tv/helix/";
-    requestMethod = "POST";
 
-    request(aEndpoint, aCallback, aBody)
+    request(aEndpoint, aCallback, aBody, aMethod)
     {
+        aMethod = aMethod ? aMethod : "POST";
         let newRequest = new XMLHttpRequest();
-        newRequest.open(this.requestMethod, "https://api.twitch.tv/helix/" + aEndpoint, true);
+        newRequest.open(aMethod, "https://api.twitch.tv/helix/" + aEndpoint, true);
         newRequest.setRequestHeader('Authorization', 'Bearer ' + twitchConfig.oauthToken);
         newRequest.setRequestHeader('Client-Id', twitchConfig.clientID);
         newRequest.setRequestHeader('Content-Type', "application/json");
@@ -29,6 +29,13 @@ class twitchAPI
             }
         };
 
-        newRequest.send(JSON.stringify(aBody));
+        if (aBody)
+        {
+            newRequest.send(JSON.stringify(aBody));
+        }
+        else
+        {
+            newRequest.send();
+        }
     }
 }
